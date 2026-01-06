@@ -1,0 +1,88 @@
+/* Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Título */
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Formulario de nuevo proyecto */
+.form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border 0.2s;
+}
+
+.input:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #667eea;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background-color: #5563c1;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Lista de proyectos */
+.projectList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.projectItem {
+  background-color: #f0f2f5;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Mensajes */
+.loading {
+  text-align: center;
+  color: #555;
+  font-size: 16px;
+  margin-top: 50px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  font-size: 16px;
+  margin-top: 50px;
+}
