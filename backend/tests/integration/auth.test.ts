@@ -4,10 +4,15 @@ import request from 'supertest';
 import app from '../../src/index';
 import { prisma } from '../../src/config/database';
 
+
 describe('Auth API', () => {
   beforeEach(async () => {
-    // Clean up database
+    await prisma.project.deleteMany();
     await prisma.user.deleteMany();
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
   });
 
   describe('POST /api/auth/register', () => {

@@ -1,17 +1,17 @@
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const authenticate = (req: any, res: any, next: any) => {
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: 'No token provided' });
   }
-
   try {
-    const decoded = jwt.verify(token, 'secret') as any;
-    req.user = decoded;
+    const decoded = jwt.verify(token, 'secret') as { id: string };
+    (req as any).user = { id: decoded.id };
     next();
-  } catch {
+  } catch (error) {
     res.status(401).json({ error: 'Invalid token' });
   }
 };
