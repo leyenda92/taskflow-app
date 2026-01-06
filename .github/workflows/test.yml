@@ -1,0 +1,30 @@
+# GitHub Actions workflow
+name: Tests
+
+on:
+  push:
+    branches: [ main, fase-3, fase-2 ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Backend
+      run: cd backend && npm ci
+
+    - name: Test Backend
+      run: cd backend && npm test
+
+    - name: Install Frontend
+      run: cd frontend && npm ci
+
+    - name: Build Frontend
+      run: cd frontend && npm run build
