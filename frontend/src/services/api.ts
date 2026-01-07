@@ -26,4 +26,11 @@ export const apiService = {
 
   getProjects: () =>
     api.get('/projects').then(res => res.data),
+  
+  deleteProject: (id: string) =>
+    api.delete(`/projects/${id}`).then(res => res.data),
+
+  updateProject: (id: string, data: { name: string }) =>
+  api.put(`/projects/${id}`, data).then(res => res.data),
+
 };

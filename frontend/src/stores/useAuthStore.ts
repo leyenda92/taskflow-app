@@ -13,10 +13,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
   login: async ({ email, password }) => {
+  try {
     const res = await apiService.login({ email, password });
     if (typeof window !== 'undefined') localStorage.setItem('token', res.token);
     set({ user: res.user, token: res.token });
-  },
+  } catch (error: any) {
+    console.error('Login error:', error);
+    throw new Error(error.response?.data?.error || 'Error al iniciar sesión');
+  }
+ },
   logout: () => {
     if (typeof window !== 'undefined') localStorage.removeItem('token');
     set({ user: null, token: null });
