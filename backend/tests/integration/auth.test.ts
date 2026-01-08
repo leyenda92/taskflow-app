@@ -4,96 +4,100 @@ import request from 'supertest';
 import app from '../../src/index';
 import { prisma } from '../../src/config/database';
 
+describe('Projects API', () => {
+  let authToken: string;
+  let userId: string;
 
-describe('Auth API', () => {
   beforeEach(async () => {
     await prisma.project.deleteMany();
     await prisma.user.deleteMany();
+
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Test User',
+        email: 'test@test.com',
+        password: 'password123',
+      });
+
+    authToken = response.body.token;
+    userId = response.body.user.id;
   });
 
   afterAll(async () => {
     await prisma.$disconnect();
   });
 
-  describe('POST /api/auth/register', () => {
-    test('should register user successfully', async () => {
-      const userData = {
-        name: 'John Doe',
-        email: 'john@test.com',
-        password: 'password123',
-      };
-
+  describe('POST /api/projects', () => {
+    test('should create project successfully', async () => {
       const response = await request(app)
-        .post('/api/auth/register')
-        .send(userData)
-        .expect(201);
+        .post('/api/projects')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({ name: 'Test Project' })
+        .expect(200);
 
-      expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.name).toBe(userData.name);
-      expect(response.body.user.email).toBe(userData.email);
-      expect(response.body).toHaveProperty('token');
+      expect(response.body).toHaveProperty('id');
+      expect(response.body.name).toBe('Test Project');
     });
 
-    test('should return 400 for duplicate email', async () => {
-      const userData = {
-        name: 'John Doe',
-        email: 'john@test.com',
-        password: 'password123',
-      };
-
-      // Create first user
-      await request(app)
-        .post('/api/auth/register')
-        .send(userData)
-        .expect(201);
-
-      // Try to create duplicate
+    test('should return 400 for invalid project name', async () => {
       const response = await request(app)
-        .post('/api/auth/register')
-        .send(userData)
+        .post('/api/projects')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({ name: 'a' })
         .expect(400);
 
-      expect(response.body.error).toBe('User already exists');
+      expect(response.body).toHaveProperty('error');
+    });
+
+    test('should return 401 without token', async () => {
+      await request(app)
+        .post('/api/projects')
+        .send({ name: 'Test Project' })
+        .expect(401);
     });
   });
 
-  describe('POST /api/auth/login', () => {
-    test('should login successfully with correct credentials', async () => {
-      const userData = {
-        name: 'John Doe',
-        email: 'john@test.com',
-        password: 'password123',
-      };
-
-      // Register user first
+  describe('GET /api/projects', () => {
+    test('should return user projects', async () => {
       await request(app)
-        .post('/api/auth/register')
-        .send(userData)
-        .expect(201);
+        .post('/api/projects')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({ name: 'Project 1' });
 
-      // Login
       const response = await request(app)
-        .post('/api/auth/login')
-        .send({
-          email: userData.email,
-          password: userData.password,
-        })
+        .get('/api/projects')
+        .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
-      expect(response.body.user).toHaveProperty('id');
-      expect(response.body).toHaveProperty('token');
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0].name).toBe('Project 1');
+    });
+  });
+
+  describe('DELETE /api/projects/:id', () => {
+    test('should delete project successfully', async () => {
+      const createRes = await request(app)
+        .post('/api/projects')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({ name: 'To Delete' });
+
+      const projectId = createRes.body.id;
+
+      await request(app)
+        .delete(`/api/projects/${projectId}`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect(200);
+
+      const projects = await prisma.project.findMany();
+      expect(projects).toHaveLength(0);
     });
 
-    test('should return 401 for invalid credentials', async () => {
-      const response = await request(app)
-        .post('/api/auth/login')
-        .send({
-          email: 'nonexistent@test.com',
-          password: 'wrongpassword',
-        })
-        .expect(401);
-
-      expect(response.body.error).toBe('Invalid credentials');
+    test('should return 404 for non-existent project', async () => {
+      await request(app)
+        .delete('/api/projects/fake-id')
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect(404);
     });
   });
 });

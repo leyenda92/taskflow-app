@@ -1,9 +1,10 @@
 import express from 'express';
 import { AuthService } from '../services/authService';
+import { validateRegister, validateLogin } from '../validators/authValidators';
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', validateRegister, async (req, res, next) => {
   try {
     const result = await AuthService.register(req.body);
     res.status(201).json(result);
@@ -12,7 +13,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', validateLogin, async (req, res, next) => {
   try {
     const result = await AuthService.login(req.body.email, req.body.password);
     res.json(result);

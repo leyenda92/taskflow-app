@@ -6,43 +6,33 @@ import authRoutes from './routes/auth';
 import projectRoutes from './routes/projects';
 import { authMiddleware } from './middleware/auth';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
-import { prisma } from './config/database';
-
-const app = express();
-
+var app = express();
 app.use(helmet());
 app.use(cors({
-  origin: true,
-  credentials: true,
+    origin: true,
+    credentials: true,
 }));
-
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+var limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
 });
 app.use('/api/', limiter);
-
 app.use(express.json());
-
 // Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get('/api/health', function (req, res) {
+    res.json({ status: 'ok' });
 });
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', authMiddleware, projectRoutes);
-
 // Error handling
 app.use(notFoundHandler);
 app.use(errorHandler);
-
 if (process.env.NODE_ENV !== 'test') {
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => {
-    console.log(`Backend running on port ${port}`);
-  });
+    app.listen(3000, function () {
+        console.log('Backend ejecutandose en puerto 3000');
+    });
 }
-
 export default app;
+//# sourceMappingURL=index.js.map
