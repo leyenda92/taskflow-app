@@ -1,0 +1,246 @@
+/* Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Título */
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Formulario de nuevo proyecto */
+.form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border 0.2s;
+}
+
+.input:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #667eea;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background-color: #5563c1;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Lista de proyectos */
+.projectList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.projectItem {
+  background-color: #f0f2f5;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deleteBtn {
+  margin-left: 10px;
+  cursor: pointer;
+  background:#667eea;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+/* Mensajes */
+.loading {
+  text-align: center;
+  color: #555;
+  font-size: 16px;
+  margin-top: 50px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  font-size: 16px;
+  margin-top: 50px;
+}
+
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.logoutBtn {
+  background: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.stats {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input, .searchInput, .editInput {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.searchInput {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.button {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.projectItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editBtn, .deleteBtn, .saveBtn, .cancelBtn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.emptyState {
+  text-align: center;
+  padding: 50px;
+  color: #6c757d;
+  font-size: 18px;
+}
+.editBtn {
+  background: #ffc107;
+}
+
+.deleteBtn {
+  background: #dc3545;
+  color: white;
+}
+
+.saveBtn {
+  background: #28a745;
+}
+
+.cancelBtn {
+  background: #6c757d;
+  color: white;
+}
+
+.noResults {
+  text-align: center;
+  color: #6c757d;
+  padding: 20px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 50px;
+}
+
+
+.sortButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.sortButtons button {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sortButtons button.active {
+  background: #007bff;
+  color: white;
+}
